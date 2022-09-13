@@ -1,26 +1,26 @@
 package com.kaneko.cursomc.resources;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kaneko.cursomc.domain.Categoria;
+import com.kaneko.cursomc.services.CategoriaService;
 
 @RestController
 @RequestMapping(value ="/api/categorias")
 public class CategoriaResource {
+	@Autowired
+	private CategoriaService categoriaService;
 	
-	@RequestMapping(method=RequestMethod.GET)
-	public List<Categoria> listar() {
-		Categoria cat1 = new Categoria(1, "Informatica");
-		Categoria cat2 = new Categoria(2, "Escritorio");
+	@RequestMapping(value="/{id}", method=RequestMethod.GET)
+	public ResponseEntity<?> find(@PathVariable Integer id) {
 		
-		List<Categoria> categorias = new ArrayList<>();
-		categorias.add(cat1);
-		categorias.add(cat2);
-		return categorias;
+		Categoria cat = categoriaService.find(id);
+		
+		return ResponseEntity.ok().body(cat);
 	}
 }
